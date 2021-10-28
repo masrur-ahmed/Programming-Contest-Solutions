@@ -1,7 +1,7 @@
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-//change the filename to Main 
+
 class Main {
 
     public static void main(String[] args) throws java.io.IOException {
@@ -15,11 +15,14 @@ class Main {
             arr.add(rd.readInt());
 
         } while (lim-- > 1);
-        sort.InsertionSort(arr);
+        Sort.BubbleSort(arr);
+        Sort.InsertionSort(arr);
+        Sort.recursiveMergeSort(arr,0,arr.size()-1);
+        Sort.recursiveQuickSort(arr,0,arr.size()-1);
     }
 }
 
-class sort {
+class Sort {
     public static int x, y, temp;
 
     public static void BubbleSort(ArrayList<Integer> arr) {
@@ -46,7 +49,7 @@ class sort {
 
             System.out.print(" " + i);
         }
-        System.out.println("Bubble sort took " + (endTime - startTime) + " milliseconds");
+        System.out.println("\nBubble sort took " + (endTime - startTime) + " milliseconds");
 
     }
     public static void InsertionSort(ArrayList<Integer> arr) {
@@ -65,13 +68,95 @@ class sort {
         
 
         long endTime = System.currentTimeMillis();
-        System.out.println("output of bubble sort:");
+        System.out.println("output of insertion sort:");
         for (int i : arr){
 
             System.out.print(" " + i);
         }
-        System.out.println("Bubble sort took " + (endTime - startTime) + " milliseconds");
+        System.out.println("\nInsertion sort took " + (endTime - startTime) + " milliseconds");
 
+    }
+    public static void recursiveMergeSort(ArrayList<Integer>arr, int low, int high){
+        long startTime = System.currentTimeMillis();
+        arr = mergeSort(arr,low,high);
+        long endTime = System.currentTimeMillis();
+        System.out.println("output of quick sort:");
+        for (int i : arr){
+
+            System.out.print(" " + i);
+        }
+        System.out.println("\nMerge sort took " + (endTime - startTime) + " milliseconds");
+    }
+    public static ArrayList<Integer> mergeSort(ArrayList<Integer>arr, int low, int high){
+        ArrayList<Integer> left,right;
+        if(low>=high)return arr;
+        int mid = (low + high)/2;
+        left =  mergeSort(arr, low, mid);
+        right = mergeSort(arr, mid+1, high);
+        return merge(arr,low,high);
+    }
+    public static ArrayList<Integer> merge(ArrayList<Integer>arr, int low, int high){
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        int  start1 = low, mid = (low + high)/2, start2 = mid +1 , i = 0; 
+        while(start1 <= mid && start2<=high){
+            if(arr.get(start1) >= arr.get(start2)){
+                res.add(arr.get(start1++));
+            }
+            else{
+                res.add(arr.get(start2++));
+            }
+        }
+        while(start1<= mid)res.add(arr.get(start1++));
+        while(start2<= high)res.add(arr.get(start2++));
+        for(int k = 0; k< res.size(); k++)arr.set(low+k,res.get(k));
+        return arr;
+    }
+
+    public static ArrayList<Integer> quickSort(ArrayList<Integer>arr, int low, int high){
+        ArrayList<Integer> left,right;
+        if(low>=high)return arr;
+        int partitionIndex = partition(arr,low,high);
+        left =  quickSort(arr, low, partitionIndex-1);
+        right = quickSort(arr, partitionIndex+1, high);
+        return arr;
+
+    }
+    public static int partition(ArrayList<Integer>arr, int low, int high){
+        int pivot = arr.get(high), bigIdx = low - 1;
+
+        for(int i = low ; i < high ; i++){
+
+            if(arr.get(i)>pivot){
+                bigIdx++;
+                x = arr.get(i);
+                y = arr.get(bigIdx);
+                x = x ^ y;
+                y = x ^ y;
+                x = x ^ y;
+                arr.set(i, x);
+                arr.set(bigIdx, y);
+            }
+        }
+
+        x = arr.get(bigIdx+1);
+        y = arr.get(high);
+        x = x ^ y;
+        y = x ^ y;
+        x = x ^ y;
+        arr.set(bigIdx+1, x);
+        arr.set(high, y);
+        return bigIdx + 1; 
+    }
+    public static void recursiveQuickSort(ArrayList<Integer>arr, int low, int high){
+        long startTime = System.currentTimeMillis();
+        arr = quickSort(arr,low,high);
+        long endTime = System.currentTimeMillis();
+        System.out.println("output of quick sort:");
+        for (int i : arr){
+
+            System.out.print(" " + i);
+        }
+        System.out.println("\nQuicksort took " + (endTime - startTime) + " milliseconds");
     }
 
 }
