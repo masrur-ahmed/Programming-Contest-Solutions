@@ -9,6 +9,7 @@ class Sort {
         MergeSort merge = new MergeSort();
         QuickSort quick = new QuickSort();
         HeapSort heap = new HeapSort();
+        BucketSort bucketSort = new BucketSort();
         ArrayList<Integer> arr = new ArrayList<Integer>();
 
         FastIO rd = new FastIO(System.in, System.out, charset);
@@ -23,5 +24,6 @@ class Sort {
         merge.recursiveMergeSort(arr,0,arr.size()-1);
         quick.recursiveQuickSort(arr,0,arr.size()-1);
         heap.initiateHeapSort(arr);
+        bucketSort.initiateBucketSort(arr);
     }
 }
